@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzdn.manage.mapper.core.UserMapper">
+
+   <!-- 开启基于redis的二级缓存 -->
+ <!--  <cache type="com.lzdn.manage.utils.RedisCache" >
+   	<property name="eviction" value="LRU" />
+     <property name="flushInterval" value="6000000" />
+      <property name="size" value="1024" />
+       <property name="readOnly" value="false" />
+  </cache>
+ -->
+  <resultMap id="BaseResultMap" type="com.lzdn.manage.domain.core.User">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="dept_id" jdbcType="INTEGER" property="deptId" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, dept_id, avatar, account, password, salt, username, birthday, sex, email, 
+    phone, status, create_time, login_time, last_login_time, version
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lzdn.manage.domain.core.User">
+    insert into t_user (user_id, dept_id, avatar, 
+      account, password, salt, 
+      username, birthday, sex, 
+      email, phone, status, 
+      create_time, login_time, last_login_time, 
+      version)
+    values (#{userId,jdbcType=INTEGER}, #{deptId,jdbcType=INTEGER}, #{avatar,jdbcType=VARCHAR}, 
+      #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, #{sex,jdbcType=INTEGER}, 
+      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{loginTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lzdn.manage.domain.core.User">
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="deptId != null">
+        dept_id,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="loginTime != null">
+        login_time,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lzdn.manage.domain.core.User">
+    update t_user
+    <set>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=INTEGER},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null">
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lzdn.manage.domain.core.User">
+    update t_user
+    set dept_id = #{deptId,jdbcType=INTEGER},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      sex = #{sex,jdbcType=INTEGER},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      login_time = #{loginTime,jdbcType=TIMESTAMP},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=INTEGER}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  
+  
+  
+   <select id="login" parameterType="com.lzdn.manage.domain.core.User" resultMap="BaseResultMap">
+    select  <include refid="Base_Column_List" /> from t_user
+    where account = #{account,jdbcType=INTEGER} and password = #{password,jdbcType=VARCHAR}
+  </select>
+  
+  <resultMap id="UserRightResult" extends="BaseResultMap" type="com.lzdn.manage.domain.core.User" >
+		<collection property="roles" ofType="com.lzdn.manage.domain.core.Role">
+			<id column="role_id" jdbcType="INTEGER" property="roleId" />
+		    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+		    <collection property="rights" ofType="com.lzdn.manage.domain.core.Right">
+			    <id column="right_id" jdbcType="INTEGER" property="rightId" />
+			    <result column="right_url" jdbcType="VARCHAR" property="rightUrl" />
+			    <result column="right_name" jdbcType="VARCHAR" property="rightName" />
+			    <association property="menu" javaType="com.lzdn.manage.domain.core.Menu">  
+					<id column="menu_id" jdbcType="INTEGER" property="menuId" />
+				    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+				    <result column="menu_code" jdbcType="VARCHAR" property="menuCode" />
+				    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+				    <result column="icon" jdbcType="VARCHAR" property="icon" />
+				    <result column="url" jdbcType="VARCHAR" property="url" />
+				    <result column="order_by" jdbcType="INTEGER" property="orderBy" />
+				</association> 
+		    </collection>
+		</collection>
+	</resultMap>
+  
+   <select id="getUserRightByUserId" parameterType="java.lang.Integer" resultMap="UserRightResult">
+    select u.*,re.role_id,re.role_name,r.right_id,r.right_url,r.right_name,m.menu_id,m.group_id,m.menu_code,
+    m.menu_name,m.icon,m.url,m.order_by
+    from t_user u
+    left join t_user_role_relation urr on u.user_id = urr.user_id
+    left join t_role re on re.role_id = urr.role_id
+    left join t_role_right_relation rrr on rrr.role_id = re.role_id
+    left join t_right r on r.right_id = rrr.right_id
+    left join t_menu m on m.menu_id = r.menu_id
+    where u.user_id = #{userId,jdbcType=INTEGER}
+    order by m.order_by
+  </select>
+</mapper>

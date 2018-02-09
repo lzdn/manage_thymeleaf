@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzdn.manage.mapper.core.MenuGroupMapper">
+   <!-- 开启基于redis的二级缓存 -->
+<!--  <cache type="com.lzdn.manage.utils.RedisCache" >
+    	<property name="eviction" value="LRU" />
+     <property name="flushInterval" value="6000000" />
+      <property name="size" value="1024" />
+       <property name="readOnly" value="false" />
+  </cache> -->
+  
+  <resultMap id="BaseResultMap" type="com.lzdn.manage.domain.core.MenuGroup">
+    <id column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="order_by" jdbcType="INTEGER" property="orderBy" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    group_id, group_name, description, order_by, version, icon
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_menu_group
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_menu_group
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lzdn.manage.domain.core.MenuGroup">
+    insert into t_menu_group (group_id, group_name, description, 
+      order_by, version, icon
+      )
+    values (#{groupId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{orderBy,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{icon,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lzdn.manage.domain.core.MenuGroup">
+    insert into t_menu_group
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="groupName != null">
+        group_name,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="orderBy != null">
+        order_by,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null">
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="orderBy != null">
+        #{orderBy,jdbcType=INTEGER},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lzdn.manage.domain.core.MenuGroup">
+    update t_menu_group
+    <set>
+      <if test="groupName != null">
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="orderBy != null">
+        order_by = #{orderBy,jdbcType=INTEGER},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lzdn.manage.domain.core.MenuGroup">
+    update t_menu_group
+    set group_name = #{groupName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      order_by = #{orderBy,jdbcType=INTEGER},
+      version = #{version,jdbcType=INTEGER},
+      icon = #{icon,jdbcType=VARCHAR}
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </update>
+  
+   <resultMap id="UserMenuGroupResult" extends="BaseResultMap" type="com.lzdn.manage.domain.core.MenuGroup" >
+		<collection property="menus" ofType="com.lzdn.manage.domain.core.Menu">
+		 	<id column="menu_id" jdbcType="INTEGER" property="menuId" />
+		    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+		    <result column="menu_code" jdbcType="VARCHAR" property="menuCode" />
+		    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+		    <!-- <result column="icon" jdbcType="VARCHAR" property="icon" /> -->
+		    <result column="url" jdbcType="VARCHAR" property="url" />
+		    <result column="order_by" jdbcType="INTEGER" property="orderBy" />
+		</collection>
+	</resultMap>
+  
+   <select id="getMenuGroupByUserId" parameterType="java.lang.Integer" resultMap="UserMenuGroupResult">
+  	select  mg.group_id, mg.group_name, mg.description,mg.order_by,mg.icon, m.menu_id,m.menu_code,m.menu_name,m.url
+	from t_menu_group mg 
+  	left join (select t.* from t_menu t order by t.order_by) m on m.group_id = mg.group_id
+  	left join t_right r on r.menu_id = m.menu_id
+  	left join t_role_right_relation rrr on rrr.right_id = r.right_id
+  	left join t_role re on re.role_id = rrr.role_id
+  	left join t_user_role_relation urr on urr.role_id = re.role_id
+  	left join t_user u on u.user_id = urr.user_id
+  	where u.user_id = #{userId,jdbcType=INTEGER}
+  	order by mg.order_by
+  </select>
+</mapper>

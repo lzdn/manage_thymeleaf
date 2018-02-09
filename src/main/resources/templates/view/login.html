@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:app="http://thymeleafexamples">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+		<title>LZDN - 登录</title>
+		<link th:replace="head"></link>
+		<link th:replace="base"></link>
+		<script>
+			if(window.top !== window.self) {
+				window.top.location = window.location;
+			}
+		</script>
+	</head>
+	<body class="gray-bg">
+		<div class="middle-box text-center loginscreen  animated fadeInDown">
+			<div>
+				<div>
+					<h1 class="logo-name">LZDN</h1>
+				</div>
+				<h3>欢迎使用 LZDN</h3>
+				<form class="m-t" id="validationLoginFrom" action="#" method="post">
+					<div class="form-group">
+						<input id="account" name="account" type="text" class="form-control" placeholder="请输入用户名/邮箱/手机号" maxlength="32" th:value="${account}">
+					</div>
+					<div class="form-group">
+						<input id="password" name="password" type="password" class="form-control" placeholder="请输入密码" maxlength="16">
+					</div>
+					<div class="text-left">
+						<label>
+						<input id="rememberMe" name="rememberMe" value="rememberMe" type="checkbox" class="i-checks" th:if="${not #strings.isEmpty(account)}" th:attr="checked='checked'"><input id="rememberMe" name="rememberMe" value="rememberMe" type="checkbox" class="i-checks" th:if="${#strings.isEmpty(account)}" >&nbsp;记住我的帐号</label>
+					</div>
+					<button id="loginButton" type="button" class="btn btn-primary block full-width m-b">登 录</button>
+					<p class="text-muted text-center">
+						<a th:href="@{/login}"><small>忘记密码了？</small></a> |
+						<a th:href="@{/register}">注册一个新账号</a>
+					</p>
+				</form>
+			</div>
+		</div>
+		<div th:replace="script"></div>
+		<script th:src="@{${basePath}+'/static/js/login.js'}"></script>
+	</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:app="http://thymeleafexamples">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+		<meta name="renderer" content="webkit">
+		<title>LZDN - 主页</title>
+		<link th:replace="head"></link>
+		<link th:replace="base"></link>
+	</head>
+	<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+		<div id="wrapper">
+			<!--左侧导航开始-->
+			<nav th:replace="admin/left"></nav>
+			<!--左侧导航结束-->
+			<!--右侧部分开始-->
+			 <div th:replace="admin/right"></div>
+			<!--右侧部分结束-->
+			<!--右侧边栏开始-->
+			<div th:replace="admin/sidebar"></div>
+			<!--右侧边栏结束-->
+			<!--mini聊天窗口开始-->
+			<div th:replace="admin/chat"></div>
+			<!--mini聊天窗口结束-->
+		</div>
+
+		<div th:replace="script"></div>
+	</body>
+
+</html>

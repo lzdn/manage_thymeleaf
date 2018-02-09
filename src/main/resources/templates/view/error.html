@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+		<title>LZDN - 出错了</title>
+		<link th:replace="head"></link>
+		<link th:replace="base"></link>
+	</head>
+
+	<body class="gray-bg">
+		<div class="middle-box text-center animated fadeInDown">
+			<h1>error</h1>
+			<h3 class="font-bold">错误信息</h3>
+			<div class="error-desc">
+				未知异常
+			</div>
+		</div>
+		<!-- 全局js -->
+		<script th:src="@{${basePath}+'/static/js/jquery.min.js?v=2.1.4'}"></script>
+		<script th:src="@{${basePath}+'/static/js/bootstrap.min.js?v=3.3.6'}"></script>
+	</body>
+
+</html>

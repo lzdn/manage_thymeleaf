@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:app="http://thymeleafexamples">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>LZDN - 部门管理</title>
+    <link th:replace="head"></link>
+    <link th:replace="base"></link>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>部门列表</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <!-- Pagination Table -->
+                    <div class="table-wrap">
+                        <div class="table-container">
+                            <div class="btn-group hidden-xs" id="toolbar" role="group">
+                           	 	<app:security value="/dept/add">
+                                    <button type="button" class="btn btn-outline btn-primary" onclick="addDepartment()">
+                                        <i class="glyphicon glyphicon-plus" aria-hidden="true"></i><span> 新增部门</span>
+                                    </button>
+                                </app:security>
+                            </div>
+                            <table id="paginationTable" data-toggle="table" data-mobile-responsive="true" data-height="600" data-icon-size="outline" data-toolbar="#toolbar">
+                                <thead>
+                                <tr>
+                                    <th data-field="deptId">DeptId</th>
+                                    <th data-field="deptSimpleName">部门简称</th>
+                                    <th data-field="deptFullName">部门全称</th>
+                                    <th data-field="description">描述</th>
+                                    <th data-field="parentDeptId" data-formatter="parentDepFormatter">上级部门</th>
+                                    <th data-formatter="optionFormatter">选项</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- End Pagination Table -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script th:src="@{'/static/js/jquery.min.js?v=2.1.4'}"></script>
+<script th:src="@{'/static/js/bootstrap.min.js?v=3.3.6'}"></script>
+<!-- 自定义js -->
+<script th:src="@{'/static/js/content.js?v=1.0.0'}"></script>
+<!-- Bootstrap table -->
+<script th:src="@{'/static/js/plugins/bootstrap-table/bootstrap-table.min.js'}"></script>
+<script th:src="@{'/static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js'}"></script>
+<script th:src="@{'/static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js'}"></script>
+<!-- layer javascript -->
+<script th:src="@{'/static/js/plugins/layer/layer.min.js'}"></script>
+
+<script th:inline="javascript">
+    tableModel = {
+        table : $('#paginationTable'),
+        url : basePath+"/dept/find",
+        addUrl: basePath+"/dept/add",
+        deleteUrl : basePath+"/dept/delete",
+        editUrl: basePath+"/dept/edit"
+    };
+
+    function parentDepFormatter(value) {
+        var text = "";
+        if (value) {
+            $.ajax({
+                url : basePath+"/dept/" + value,
+                type : "get",
+                async : false,
+                success : function(response) {
+                    if (response) {
+                        text = response.deptSimpleName;
+                    }
+                },
+                error : function() {
+                }
+            });
+        }
+        return text;
+    }
+
+    function optionFormatter(value, row, index) {
+        var editHtml = "&nbsp;<app:security value=\"/dept/update\"><button type='button' class='fa fa-edit btn btn-primary' onclick='editDepartment(" + row.deptId + ")'>编 辑</button></app:security>&nbsp;";
+        var deleteHtml = "&nbsp;<app:security value=\"/dept/delete\"><button type='button' class='delete fa fa-times btn btn-default' onclick='commonDelete(" + row.deptId + ")'>删 除</button></app:security>&nbsp;";
+        // var editHtml = "&nbsp;<button type='button' class='fa fa-edit btn btn-primary' onclick='editDepartment(" + row.deptId + ")'>编 辑</button>&nbsp;";
+        //var deleteHtml = "&nbsp;<button type='button' class='delete fa fa-times btn btn-default' onclick='commonDelete(" + row.deptId + ")'>删 除</button>&nbsp;";
+        return "<div class='text-center'>" + editHtml + deleteHtml + "</div>";
+    }
+
+    function addDepartment() {
+        //iframe层
+        parent.layer.open({
+            type: 2,
+            title: ['新增部门', 'font-weight:bold;'],
+            shadeClose: true,
+            shade: 0.8,
+            area: ['50%', '50%'],
+            content: tableModel.addUrl
+        });
+    }
+
+    function editDepartment(departmentId) {
+        //iframe层
+        parent.layer.open({
+            type: 2,
+            title: ['编辑部门', 'font-weight:bold;'],
+            shadeClose: true,
+            shade: 0.8,
+            area: ['50%', '50%'],
+            content: tableModel.editUrl + "/" + departmentId //iframe的url
+        });
+    }
+</script>
+
+<!-- 通用表格初始化和删除代码 -->
+<script th:src="@{'/static/js/admin/table.js'}"></script>
+</body>
+
+</html>
+
